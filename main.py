@@ -1,38 +1,55 @@
 from flask import Flask, jsonify
-import random
-
+import os
 from openai import OpenAI
 
 app = Flask(__name__)
 
-compliments = [
-    "You're amazing!",
-    "You have a great smile!",
-    "You're a true inspiration!",
-    "Your kindness knows no bounds!",
-    "You're exceptionally talented!",
-]
-
-insults = [
-    "You're not the brightest bulb in the box.",
-    "You couldn't pour water out of a boot with instructions on the heel.",
-    "I've seen smarter people at a zoo.",
-    "You're as useful as a screen door on a submarine.",
-    "You're a walking advertisement for the benefits of birth control.",
-]
-
-#Using second person perspective, give me a one liner roast  for a comedy script using following keywords: "bald", "mustache" 
-
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return jsonify({"message": 'Hello, World!'})
+
+keywords="cuban, mustache, blonde"
 
 @app.route('/compliment', methods=['GET'])
 def get_compliment():
-    return jsonify({"compliment": random.choice(compliments)})
+    return jsonify({"compliment": get_compliment(keywords)})
 
-@app.route('/insult', methods=['GET'])
+@app.route('/roast', methods=['GET'])
 def get_insult():
-    return jsonify({"insult": random.choice(insults)})
+    return jsonify({"roast": get_roast(keywords)})
 
+#open AI 
+from openai import OpenAI
+
+client = OpenAI(api_key='INSERTKEY')
+
+def get_roast(keywords):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a professional standup comedian " +
+            "Your job is to come up with a one liner roast based on the given keywords "+ 
+            "based on the given keywords that represents the customer's apperance."},
+            {"role": "user", "content": 
+             "Give me a one liner roast using these comments:" + keywords}
+        ]
+    )
+    return response.choices[0].message.content
+
+
+def get_compliment(keywords):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a professional Customer Service Representatives " +
+            "Your job is to come up with a one liner compliment to the customer" +
+            "based on the given keywords that represents the customer's apperance."},
+            {"role": "user", "content": 
+             "Give me a one liner compliment using these comments:" + keywords}
+        ]
+    )
+    return response.choices[0].message.content
+
+if __name__ == '__main__':
+    app.run(debug=True, port=9000)
 
