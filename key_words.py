@@ -50,16 +50,17 @@ Plan for the algorithm:
         - Organize it if necessary for easier analysis
     2. Retrieve the top 10 highest valued attributes and 10 lowest valued attributes
     3. Out of those, select 3 attributes
-    4. Each attribute is linked to one keyword through a dictionary, use these keywords
+    4*. Each attribute is linked to one keyword through a dictionary, use these keywords
        in combination with chatgpt to generate 5 similar words, either insult or complement
-    5. Choose two of these words and then one of those two plus the keyword to be used in the insult
+    5*. Choose two of these words and then one of those two plus the keyword to be used in the insult
        or complement for each attribute
     6. Send these keywords to Danny for the actual insult/complement generation
     7. Use this program multiple times for each person in the game session
+    * - Next steps or extra additions if time permits
 """
 
-#Two dictionaries, one for low, one for high, note 19, 25 missing
-
+# Two dictionaries, one for low, one for high, note 19, 25 missing because they were attributes that
+# had no value to the objective of this program.
 low_scores = {
     0: "no stubble",
     1: "round eyebrows",
@@ -141,10 +142,13 @@ high_scores = {
     38: "young"
 }
 
-def gen_key(data):
-    
-    return 0
+# Simply converts the results from the function doing the hardwork into the desirable format
+def gen_keys(data):
+    attributes = get_attributes(data)
+    return attributes[0] + ", " + attributes[1] + ", " + attributes[2]
 
+# Analyzes the results given by the facial features AI and produces random keywords to be used in
+# insults and complements
 def get_attributes(data):
     raw_data = data
     sorted_data = raw_data.copy()
@@ -152,6 +156,8 @@ def get_attributes(data):
     sorted_data[25] = -1
     sorted_data.sort(reverse=True)
 
+    # The following loads the attributes with the values on the extremes which are the best choices
+    # for insulting/complementing
     highs = []
     lows = []
     temp_raw = raw_data.copy()
@@ -167,16 +173,17 @@ def get_attributes(data):
             lows.append(idx)
             temp_raw[idx] = -1
     
-    #print(highs)
-    #print(lows)
+    # print(highs)
+    # print(lows)
 
+    # Generate keywords
     highs_or_lows = random.randint(0, 1)
     attributes = []
     if (0 == highs_or_lows):
         a1 = highs[random.randint(0, 9)]
         a2 = highs[random.randint(0, 9)]
         a3 = lows[random.randint(0, 9)]
-        #print(str(a1) + " " + str(a2) + " " + str(a3))
+        # print(str(a1) + " " + str(a2) + " " + str(a3))
         attributes = [high_scores.get(a1), 
                       high_scores.get(a2), 
                       low_scores.get(a3)]
@@ -184,7 +191,7 @@ def get_attributes(data):
         a1 = lows[random.randint(0, 9)]
         a2 = lows[random.randint(0, 9)]
         a3 = highs[random.randint(0, 9)]
-        #print(str(a1) + " " + str(a2) + " " + str(a3))
+        # print(str(a1) + " " + str(a2) + " " + str(a3))
         attributes = [low_scores.get(a1), 
                       low_scores.get(a2), 
                       high_scores.get(a3)]
@@ -195,3 +202,7 @@ def get_attributes(data):
 """print(get_attributes([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
 print(get_attributes([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]))
 print(get_attributes([0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1]))"""
+
+"""print(gen_keys([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
+print(gen_keys([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]))
+print(gen_keys([0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1]))"""
