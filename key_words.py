@@ -91,7 +91,7 @@ low_scores = {
     27: "healthy hairline",
     28: "non-rosy cheeks",
     29: "no sideburns",
-    30: "unhappy",
+    30: "frown",
     31: "curly hair",
     32: "straight hair",
     33: "no earrings",
@@ -131,7 +131,7 @@ high_scores = {
     27: "balding",
     28: "blushing",
     29: "sideburns",
-    30: "happy",
+    30: "smiling",
     31: "straight hair",
     32: "curly hair",
     33: "earrings",
@@ -143,9 +143,10 @@ high_scores = {
 }
 
 # Simply converts the results from the function doing the hardwork into the desirable format
-def gen_keys(data):
+def gen_keys(data, emotion):
     attributes = get_attributes(data)
-    return attributes[0] + ", " + attributes[1] + ", " + attributes[2]
+    possible_emotion = get_emotion(emotion)
+    return attributes[0] + ", " + attributes[1] + ", " + attributes[2] + ((", " + possible_emotion) if len(possible_emotion) != 0 else "")
 
 # Analyzes the results given by the facial features AI and produces random keywords to be used in
 # insults and complements
@@ -203,6 +204,21 @@ def get_attributes(data):
 print(get_attributes([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]))
 print(get_attributes([0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1]))"""
 
-"""print(gen_keys([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
-print(gen_keys([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]))
-print(gen_keys([0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1]))"""
+
+# Retrieves the most prominent emotion in the picture and determines whether it will be passed with
+# the key words to be used in the insult/complement
+def get_emotion(emotion):
+    randomizer1 = random.randint(0, 100)
+    randomizer2 = random.randint(0, 100)
+
+    if (randomizer1 >= randomizer2):
+        return emotion
+    else:
+        return ""
+    
+"""print(get_emotion("happy"))
+print(get_emotion("sad"))
+
+print(gen_keys([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], "angry"))
+print(gen_keys([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38], "happy"))
+print(gen_keys([0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1], "fear"))"""
