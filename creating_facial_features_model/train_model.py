@@ -14,8 +14,9 @@ from CommentGenerator.creating_facial_features_model.global_variables import PAT
     NUM_IMAGES, START_VAL, START_TEST, EPOCHS
 from CommentGenerator.creating_facial_features_model.preprocess import file_name_to_img
 
+
 if True:
-    optimizer = optimizers.Adam()
+    optimizer = optimizers.Adam(learning_rate=0.00055)
     print(optimizer)
     model = Sequential([
         layers.Rescaling(1. / 255, input_shape=(256, 256, 3)),
@@ -31,8 +32,7 @@ if True:
         layers.Dense(40, activation='sigmoid')
     ])
 
-    loss = CategoricalCrossentropy(label_smoothing=0.09)
-    model.compile(optimizer=optimizer, loss=loss)
+    model.compile(optimizer=optimizer, loss='poisson', metrics='mean_squared_error')
 
     batch_size = 40
 
@@ -45,7 +45,7 @@ if True:
     my_training_batch_generator = BatchGenerator(x_train_filenames, y_train[0:START_VAL], batch_size)
     my_validation_batch_generator = BatchGenerator(x_val_filenames, y_train[START_VAL:START_TEST], batch_size)
 
-    checkpoint = ModelCheckpoint('modelPSN_checkpoint.txt', monitor="val_loss", save_best_only=True, save_weights_only=False)
+    checkpoint = ModelCheckpoint('modelPSN_checkpoint', monitor="val_loss", save_best_only=True, save_weights_only=False)
 
     history = model.fit_generator(generator=my_training_batch_generator,
                                   steps_per_epoch=START_VAL//batch_size,
@@ -55,11 +55,14 @@ if True:
                                   validation_steps=(START_TEST-START_VAL)//batch_size,
                                   callbacks=[checkpoint])
 
+    model.load_weights('modelPSN_checkpoint')
     print(history)
     print(model)
 
-    with open('model.txt', 'wb') as fp:
-        pickle.dump(model, fp)
+    model.save('modelPSN.keras')
 
-    with open('history.txt', 'wb') as fp:
+    # with open('modelPSN.txt', 'wb') as fp:
+        # pickle.dump(model, fp)
+
+    with open('historyPSN.txt', 'wb') as fp:
         pickle.dump(history, fp)

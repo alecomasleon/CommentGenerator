@@ -21,4 +21,4 @@ class BatchGenerator(keras.utils.Sequence):
         # print(batch_x)
         # print()
 
-        return np.array([resize(imread(str(file_name)), (256, 256)) for file_name in batch_x]) / 255.0, np.array(batch_y)
+        return np.array([resize(imread(str(file_name)), (256, 256)) for file_name in batch_x]), np.array(batch_y)

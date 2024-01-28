@@ -1,4 +1,4 @@
-import pickle
+from keras.models import load_model
 
 
 MODEL_PATH = ''
@@ -6,8 +6,7 @@ MODEL_PATH = ''
 
 class FacialFeaturesModel:
     def __init__(self):
-        with open(MODEL_PATH, 'rb') as fp:
-            self.model = pickle.load(fp)
+        self.model = load_model('model.keras')
 
     def predict(self, x):
         return self.model.predict(x)
