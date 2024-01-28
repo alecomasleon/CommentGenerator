@@ -7,6 +7,7 @@ import random
 from dotenv import load_dotenv
 import cv2 as cv
 import time
+from flask_cors import CORS, cross_origin
 
 from models.EmotionDetector import EmotionDetector
 from models.FacialFeaturesModel import FacialFeaturesModel
@@ -17,6 +18,8 @@ facialFeaturesModel = FacialFeaturesModel()
 load_dotenv()
 
 app = Flask(__name__)
+cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'application/json'
 
 @app.route('/')
 def hello_world():
@@ -35,6 +38,14 @@ def get_insult():
 
 DOWNLOADS_PATH = "/Users/alejandro/Downloads/"
 FILE = "/Users/alejandro/Downloads/INC_MSG.txt"
+
+@app.route('/temp', methods=["GET", "POST"])
+def temp():
+    response = jsonify({'msg': "hiiii"})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    # response.headers.add("Access-Control-Allow-Headers", "*")
+    # response.headers.add("Access-Control-Allow-Methods", "*")
+    return response
 
 @app.route('/request', methods=["GET", "POST"])
 def receive_image():
@@ -72,7 +83,11 @@ def receive_image():
     with open(FILE, 'w') as f:
         f.write(msg)
 
-    return jsonify({'msg': msg})
+    response = jsonify({'msg': msg})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    # response.headers.add("Access-Control-Allow-Headers", "*")
+    # response.headers.add("Access-Control-Allow-Methods", "*")
+    return response
 
 
 @app.route('/process', methods=['GET', 'POST'])
