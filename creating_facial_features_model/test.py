@@ -1,4 +1,6 @@
 import cv2 as cv
+
+from CommentGenerator.models.FacialFeaturesModel import FacialFeaturesModel
 from global_variables import PATH_TO_IMAGES, IMAGE_SIZE
 from fer import FER
 
@@ -26,8 +28,8 @@ if __name__ == '__main__':
 
     cv.imshow("Display window", img)
 
-    detector = FER()
-    print(detector.detect_emotions(img))
+    ffm = FacialFeaturesModel()
+    print(ffm.predict(img))
 
     k = cv.waitKey(0)
     cv.destroyAllWindows()

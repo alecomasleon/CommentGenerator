@@ -3,6 +3,13 @@ import os
 from openai import OpenAI
 import random
 from dotenv import load_dotenv
+
+from CommentGenerator.models.EmotionDetector import EmotionDetector
+from CommentGenerator.models.FacialFeaturesModel import FacialFeaturesModel
+from key_words import get_emotion, get_attributes, gen_keys
+
+emotionDetector = EmotionDetector()
+facialFeaturesModel = FacialFeaturesModel()
 load_dotenv()
 
 app = Flask(__name__)
@@ -48,6 +55,7 @@ client = OpenAI(api_key= os.environ.get("OPENAI_API_KEY"))
 #     print (str_data)
 #     return str_data
 
+
 def get_roast(keywords):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -60,6 +68,7 @@ def get_roast(keywords):
         ]
     )
     return response.choices[0].message.content
+
 
 def get_compliment(keywords):
     response = client.chat.completions.create(
@@ -74,5 +83,6 @@ def get_compliment(keywords):
     )
     return response.choices[0].message.content
 
+
 if __name__ == '__main__':
-    app.run(debug=True, port=9000)
+    app.run(debug=False, port=9000)
