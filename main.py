@@ -11,7 +11,7 @@ app = Flask(__name__)
 def hello_world():
     return jsonify({"message": 'Hello, World!'})
 
-keywords="cuban, mustache, blonde"
+keywords="big eye, mustache, blonde"
 
 @app.route('/compliment', methods=['GET'])
 def get_compliment():
