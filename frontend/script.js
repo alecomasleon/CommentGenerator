@@ -54,7 +54,27 @@ btn.addEventListener('click', (event) => {
   console.log(downloadImage(url))
 })
 
- async function downloadImage(url) {
+FILE = "/Users/alejandro/Downloads/INC_MSG.txt"
+
+import { readFile } from 'fs';
+
+function handleFileSelect(event) {
+  const fileInput = event.target;
+  const file = fileInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      const content = e.target.result;
+      displayFileContent(content);
+    };
+
+    reader.readAsText(file);
+  }
+}
+
+async function downloadImage(url) {
   var name = generateUniqueCode(8) + ".jpg"
   var a = document.createElement('a');
   a.href = url;
@@ -66,28 +86,35 @@ btn.addEventListener('click', (event) => {
   const serverUrl = new URL("http://127.0.0.1:9000/request")
   const params = { 'name': name}
   serverUrl.search = new URLSearchParams(params)
+  // fetch(serverUrl, {mode:'no-cors',
+  // headers : { 
+  //   'Content-Type': 'application/json',
+  //   'Accept': 'application/json'
+  //  }})
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log(data)
+  //   })
   let response = await fetch( serverUrl, {mode:'no-cors'})
 
   console.log("RESPONSEEE:::")
   console.log(response)
+  msg = readFile(FILE,(err, inputD) => {
+    if (err) throw err;
+       console.log(inputD.toString());
+  })
+  console.log(msg)
   return name;
 }
 
-async function fetchMessage(name) {
-  try {
-    const response = await fetch(`/request?name=${name}`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data. Status: ${response.status}`);
-    }
+// async function fetchMessage(name) {
+//     const response = await fetch(`/request`);
 
-    const json = await response.json();
-    console.log('Message:', json.message);
-    return json.message;
-  } catch (error) {
-    console.error('Error fetching message:', error.message);
-    throw error;
-  }
-}
+//     const json = await response.json();
+//     console.log('Message:', json.message);
+//     return json.message;
+
+// }
 
 
 //.then(responseData => {

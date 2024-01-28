@@ -1,9 +1,12 @@
-from flask import Flask, jsonify, request
+from aifc import Error
+
+from flask import Flask, jsonify, request, Response
 import os
 from openai import OpenAI
 import random
 from dotenv import load_dotenv
 import cv2 as cv
+import time
 
 from models.EmotionDetector import EmotionDetector
 from models.FacialFeaturesModel import FacialFeaturesModel
@@ -31,18 +34,34 @@ def get_insult():
 
 
 DOWNLOADS_PATH = "/Users/alejandro/Downloads/"
+FILE = "/Users/alejandro/Downloads/INC_MSG.txt"
 
 @app.route('/request', methods=["GET", "POST"])
 def receive_image():
     name = request.args.get('name')
     print(name)
 
+    # img = ''
+    # for i in range(3):
+    #     try:
+    #         img = cv.imread(DOWNLOADS_PATH + name)
+    #     except:
+    #         print("imread failed")
+    #         time.sleep(200)
+    #
+    # if img is None:
+    #     raise Error("imread failed 3 times")
+
+    time.sleep(0.5)
     img = cv.imread(DOWNLOADS_PATH + name)
     img = cv.resize(img, (256, 256))
     ff = facialFeaturesModel.predict(img).tolist()
-    emotion = emotionDetector.get_most_prominent_emotion(img)
+    print(img)
+    print(ff)
+    # emotion = emotionDetector.get_most_prominent_emotion(img)
 
-    keys = gen_keys(ff, emotion)
+    # keys = gen_keys(ff, emotion)
+    keys = gen_keys(ff)
 
     if random.random() < 0.75:
         msg = get_roast(keys)
@@ -50,7 +69,10 @@ def receive_image():
         msg = get_compliment(keys)
 
     print(msg)
-    return jsonify({'message':msg})
+    with open(FILE, 'w') as f:
+        f.write(msg)
+
+    return jsonify({'msg': msg})
 
 
 @app.route('/process', methods=['GET', 'POST'])

@@ -149,6 +149,13 @@ def gen_keys(data, emotion):
     print(attributes)
     return attributes[0] if attributes[0] else "" + ", " + attributes[1] if attributes[1] else "" + ", " + attributes[2] if attributes[2] else "" + ((", " + possible_emotion) if len(possible_emotion) != 0 else "")
 
+
+def gen_keys(data):
+    attributes = get_attributes(data)
+    print(attributes)
+    return attributes[0] if attributes[0] else "" + ", " + attributes[1] if attributes[1] else "" + ", " + attributes[2] if attributes[2] else ""
+
+
 # Analyzes the results given by the facial features AI and produces random keywords to be used in
 # insults and complements
 def get_attributes(data):
