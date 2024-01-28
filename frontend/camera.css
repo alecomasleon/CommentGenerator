@@ -1,0 +1,72 @@
+#detach-button-host {
+    display: none;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    /* user-select: none; */
+}
+
+#camera--view,
+#camera--sensor,
+#camera--output {
+    /* position: fixed; */
+    height: 100%;
+    width: inherit;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: stroke;
+}
+
+#camera--sensor {
+    height: 0 !important;
+    position: absolute;
+}
+
+#camera--view,
+#camera--sensor,
+#camera--output {
+    transform: scaleX(-1);
+    /* filter: FlipH; */
+}
+
+/* #camera--trigger, #camera--deleter {
+    width: 65px;
+    background-color: rgb(39, 37, 37);
+    color: white;
+    font-size: 20px;
+    border-radius: 36px;
+    border: 4px solid white;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+
+    position: absolute;
+
+    bottom: 50px;
+    left: calc(50% - 50px);
+    cursor: pointer;
+    transition: all 0.5s linear ease-in-out;
+
+    z-index: 5;
+} */
+
+#camera--trigger {
+    width: 50%;
+}
+
+.taken {
+    height: 100px !important;
+    width: 100px !important;
+    transition: all 0.5s ease-in;
+    border: solid 3px white;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+    user-select: none;
+}
