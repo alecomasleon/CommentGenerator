@@ -3,6 +3,7 @@ import os
 from openai import OpenAI
 import random
 from dotenv import load_dotenv
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -21,7 +22,7 @@ def get_compliment():
 def get_insult():
     return jsonify({"roast": get_roast(keywords)})
 
-#open AI 
+# open AI 
 client = OpenAI(api_key= os.environ.get("OPENAI_API_KEY"))
 # def make_rand(keywords):
 #     response = client.chat.completions.create(
@@ -53,10 +54,10 @@ def get_roast(keywords):
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a professional standup comedian " +
-            "Your job is to come up with a two liner roast based on the given keywords "+ 
+            "Your job is to come up with a two line roast based on the given keywords "+ 
             "based on the given keywords that represents the customer's apperance."},
             {"role": "user", "content": 
-             "Give me a two liner roast using these comments:" + keywords}
+             "Give me a two line roast using these comments:" + keywords}
         ]
     )
     return response.choices[0].message.content
@@ -66,10 +67,10 @@ def get_compliment(keywords):
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a professional Customer Service Representatives " +
-            "Your job is to come up with a two liner compliment to the customer" +
+            "Your job is to come up with a two line compliment to the customer" +
             "based on the given keywords that represents the customer's apperance."},
             {"role": "user", "content": 
-             "Give me a two liner compliment using these comments:" + keywords}
+             "Give me a two line compliment using these comments:" + keywords}
         ]
     )
     return response.choices[0].message.content
