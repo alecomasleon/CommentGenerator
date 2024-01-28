@@ -6,6 +6,8 @@ from keras.layers import Dense, Input, Conv2D, Concatenate, Flatten
 from keras import layers, optimizers
 import numpy as np
 import pandas as pd
+from keras.src.callbacks import ModelCheckpoint
+from keras.src.losses import CategoricalCrossentropy
 
 from CommentGenerator.creating_facial_features_model.BatchGenerator import BatchGenerator
 from CommentGenerator.creating_facial_features_model.global_variables import PATH_TO_ALL_DATA, PATH_TO_IMAGES, \
@@ -28,7 +30,9 @@ if True:
         layers.Dense(128, activation='relu'),
         layers.Dense(40, activation='sigmoid')
     ])
-    model.compile(optimizer=optimizer, loss='binary_crossentropy')
+
+    loss = CategoricalCrossentropy(label_smoothing=0.09)
+    model.compile(optimizer=optimizer, loss=loss)
 
     batch_size = 40
 
@@ -41,12 +45,15 @@ if True:
     my_training_batch_generator = BatchGenerator(x_train_filenames, y_train[0:START_VAL], batch_size)
     my_validation_batch_generator = BatchGenerator(x_val_filenames, y_train[START_VAL:START_TEST], batch_size)
 
+    checkpoint = ModelCheckpoint('modelPSN_checkpoint.txt', monitor="val_loss", save_best_only=True, save_weights_only=False)
+
     history = model.fit_generator(generator=my_training_batch_generator,
                                   steps_per_epoch=START_VAL//batch_size,
                                   epochs=EPOCHS,
                                   verbose=1,
                                   validation_data=my_validation_batch_generator,
-                                  validation_steps=(START_TEST-START_VAL)//batch_size)
+                                  validation_steps=(START_TEST-START_VAL)//batch_size,
+                                  callbacks=[checkpoint])
 
     print(history)
     print(model)

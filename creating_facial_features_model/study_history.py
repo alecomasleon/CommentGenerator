@@ -3,18 +3,29 @@ import matplotlib.pyplot as plt
 
 from CommentGenerator.creating_facial_features_model.global_variables import EPOCHS
 
-with open('history.txt', 'rb') as fp:
+EPOCHS = 4
+
+with open('historyMSE.txt', 'rb') as fp:
     history = pickle.load(fp)
 
 print(history.history)
 
-loss = history.history['loss']
-val_loss = history.history['val_loss']
+lst = list(history.history.keys())
+lst = lst[:len(lst)//2]
+for i in range(len(lst)):
+    plt.figure(i)
 
-epochs_range = range(EPOCHS)
+    epochs_range = range(EPOCHS)
 
-plt.plot(epochs_range, loss, label='Training Loss')
-plt.plot(epochs_range, val_loss, label='Validation Loss')
-plt.legend(loc='upper right')
-plt.title('Training and Validation Loss')
+    key = lst[i]
+    vals = history.history[key]
+    plt.plot(epochs_range, vals, label=key)
+
+    key1 = 'val_' + lst[i]
+    vals = history.history[key1]
+    plt.plot(epochs_range, vals, label=key1)
+
+    plt.legend(loc='upper right')
+    plt.title(key + ' and ' + key1)
+
 plt.show()
