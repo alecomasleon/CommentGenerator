@@ -2,7 +2,7 @@ const chat_box = document.querySelector(".chatbox_body");
 const sendBtn = document.querySelector(".chatbox_footer i")
 
 
-var gpt_msg = ["kill yourself", "where are the eyelids lil bro", "omigosh is that the real vladimir", "yeah no kill yourself", "monkey"];
+var gpt_msg = [""];
 
 function gptPrint(mesaj) {
     
@@ -38,7 +38,7 @@ const printChat = () => {
 }
 
 const printGpt = (choice) => {
-    let description = choice[Math.floor(Math.random() * 5)];
+    let description = choice[Math.floor(Math.random() * choice.length)];
 
     let li = `
         <li class='message gpt'>${description}</li>
@@ -71,14 +71,14 @@ function scrollToBottom() {
 
 
 document.querySelector(".compliment").addEventListener("click", () => {
-    document.querySelector(".chatbox_body ul").insertAdjacentHTML("beforeend", `<li class='message user'>Kill yourself</li>`);
+    document.querySelector(".chatbox_body ul").insertAdjacentHTML("beforeend", `<li class='message user'>Compliment me please!</li>`);
     document.querySelector(".options").remove();
     // gptPrint(gpt_msg);
     
     scrollToBottom();
 })
 document.querySelector(".insult").addEventListener("click", () => {
-    document.querySelector(".chatbox_body ul").insertAdjacentHTML("beforeend", `<li class='message user'>Insult me please</li>`);
+    document.querySelector(".chatbox_body ul").insertAdjacentHTML("beforeend", `<li class='message user'>Insult me please!</li>`);
     document.querySelector(".options").remove();
     // gptPrint(gpt_msg);
 
