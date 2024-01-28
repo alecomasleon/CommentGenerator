@@ -10,4 +10,4 @@ class FacialFeaturesModel:
         self.model = load_model(MODEL_PATH)
 
     def predict(self, img):
-        return self.model.predict(np.array([img]))
+        return self.model.predict(np.array([img]))[0]

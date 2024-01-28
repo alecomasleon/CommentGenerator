@@ -1,11 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import os
 from openai import OpenAI
 import random
 from dotenv import load_dotenv
+import cv2 as cv
 
-from CommentGenerator.models.EmotionDetector import EmotionDetector
-from CommentGenerator.models.FacialFeaturesModel import FacialFeaturesModel
+from models.EmotionDetector import EmotionDetector
+from models.FacialFeaturesModel import FacialFeaturesModel
 from key_words import get_emotion, get_attributes, gen_keys
 
 emotionDetector = EmotionDetector()
@@ -26,6 +27,35 @@ def get_compliment():
 
 @app.route('/roast', methods=['GET'])
 def get_insult():
+    return jsonify({"roast": get_roast(keywords)})
+
+
+DOWNLOADS_PATH = "/Users/alejandro/Downloads/"
+
+@app.route('/request', methods=["GET", "POST"])
+def receive_image():
+    name = request.args.get('name')
+    print(name)
+
+    img = cv.imread(DOWNLOADS_PATH + name)
+    img = cv.resize(img, (256, 256))
+    ff = facialFeaturesModel.predict(img).tolist()
+    emotion = emotionDetector.get_most_prominent_emotion(img)
+
+    keys = gen_keys(ff, emotion)
+
+    if random.random() < 0.75:
+        msg = get_roast(keys)
+    else:
+        msg = get_compliment(keys)
+
+    print(msg)
+    return jsonify({'message':msg})
+
+
+@app.route('/process', methods=['GET', 'POST'])
+def get_message(uuid):
+    #content = request.args.get('url')
     return jsonify({"roast": get_roast(keywords)})
 
 #open AI 
@@ -85,4 +115,4 @@ def get_compliment(keywords):
 
 
 if __name__ == '__main__':
-    app.run(debug=False, port=9000)
+    app.run(debug=True, port=9000)

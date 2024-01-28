@@ -146,7 +146,8 @@ high_scores = {
 def gen_keys(data, emotion):
     attributes = get_attributes(data)
     possible_emotion = get_emotion(emotion)
-    return attributes[0] + ", " + attributes[1] + ", " + attributes[2] + ((", " + possible_emotion) if len(possible_emotion) != 0 else "")
+    print(attributes)
+    return attributes[0] if attributes[0] else "" + ", " + attributes[1] if attributes[1] else "" + ", " + attributes[2] if attributes[2] else "" + ((", " + possible_emotion) if len(possible_emotion) != 0 else "")
 
 # Analyzes the results given by the facial features AI and produces random keywords to be used in
 # insults and complements

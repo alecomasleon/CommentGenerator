@@ -1,8 +1,41 @@
 const chat_box = document.querySelector(".chatbox_body");
 const sendBtn = document.querySelector(".chatbox_footer i")
 
+const apiUrl = 'http://localhost:9000/roast';
 
-var gpt_msg = [""];
+function getroast(apiUrl, dataArray) {
+    return fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        return JSON.parse(data).roast;
+        // Do something with the data
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+}
+
+  function getcompliment(apiUrl, dataArray) {
+    return fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        return JSON.parse(data).compliment;
+        // Do something with the data
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+}
 
 function gptPrint(mesaj) {
     
