@@ -51,9 +51,11 @@ function generateUniqueCode(length) {
 
 btn.addEventListener('click', (event) => {
   event.preventDefault();
-  console.log('ABC')
-  const le_mesaj = async () => {await downloadImage(url)};
-  gptPrint(async () => {await downloadImage(url)});
+  async function thing() {
+    await downloadImage(url);
+  };
+  thing();
+  
 })
 
 FILE = "/Users/alejandro/Downloads/INC_MSG.txt"
@@ -109,7 +111,10 @@ async function downloadImage(url) {
   //   if (err) throw err;
   //      console.log(inputD.toString());
   // })
-  return msg;
+
+  gptPrint(msg.msg);
+
+  // return msg;
 }
 
 
@@ -202,14 +207,20 @@ sendBtn.addEventListener("click", () => {
     if(document.querySelector(".chatbox_footer input").value != '') {
         printChat();
         document.querySelector(".pendinguser").remove();
-        gptPrint();
+        async function thing() {
+          await downloadImage(url);
+        };
+        thing();
     }
 });
 document.body.addEventListener('keydown', e => {
     if(e.key == 'Enter' && document.querySelector(".chatbox_footer input").value != '') {
         printChat();
         document.querySelector(".pendinguser").remove();
-        gptPrint();
+        async function thing() {
+          await downloadImage(url);
+        };
+        thing();
     }
 });
 
@@ -219,20 +230,17 @@ function scrollToBottom() {
 
 
 
-document.querySelector(".compliment").addEventListener("click", () => {
-    document.querySelector(".chatbox_body ul").insertAdjacentHTML("beforeend", `<li class='message user'>Compliment me please!</li>`);
-    document.querySelector(".options").remove();
-    // gptPrint(gpt_msg);
+// document.querySelector(".compliment").addEventListener("click", () => {
+//     document.querySelector(".chatbox_body ul").insertAdjacentHTML("beforeend", `<li class='message user'>Come at me!</li>`);
     
-    scrollToBottom();
-})
-document.querySelector(".insult").addEventListener("click", () => {
-    document.querySelector(".chatbox_body ul").insertAdjacentHTML("beforeend", `<li class='message user'>Insult me please!</li>`);
-    document.querySelector(".options").remove();
-    // gptPrint(gpt_msg);
-
-    scrollToBottom();
-})
+//     async function thing() {
+//       await downloadImage(url);
+//       document.querySelector(".options").remove();
+//     };
+//     thing();
+    
+//     scrollToBottom();
+// })
 
 
 

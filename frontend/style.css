@@ -53,7 +53,7 @@ html {
 
 #camera video, #camera canvas {
     width: var(--camera_width);
-    height: 589.45px;
+    height: 549.45px;
   
     border-radius: inherit;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
