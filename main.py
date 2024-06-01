@@ -69,6 +69,9 @@ def receive_image():
     ff = facialFeaturesModel.predict(img).tolist()
     print(img)
     print(ff)
+
+    # cv.imshow("Display window", img)
+    cv.imwrite(DOWNLOADS_PATH + "IMG1.jpg", img)
     # emotion = emotionDetector.get_most_prominent_emotion(img)
 
     # keys = gen_keys(ff, emotion)
