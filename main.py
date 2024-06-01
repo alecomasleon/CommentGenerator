@@ -25,8 +25,6 @@ cors = CORS(app)
 def hello_world():
     return jsonify({"message": 'Hello, World!'})
 
-keywords="big eye, mustache, blonde"
-
 @app.route('/compliment', methods=['GET'])
 def get_compliment():
     return jsonify({"compliment": get_compliment(keywords)})
